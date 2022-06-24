@@ -44,39 +44,57 @@ public class ArbolBinario
         Nodo n=new Nodo(null);
         Nodo n1=new Nodo(null);
 
-        //Busca el nodo para Verificar que no exista 
-        Nodo nodoBuscado = buscarNodo(nodo.dato);
-        
-        if (nodoBuscado == null){
-            while (actual != null){
-                anterior = actual;
-                
-                if(dato_nodo<Integer.parseInt((actual.dato.toString()))){
-                    actual.fe--;
-                    if (actual.fe == -2){
-                        n=actual;
-                        n0=anterior;
-                    }
-                    actual = actual.subarbolIzdo();
-                    if (n!=null && n1==null){
-                        n1 =actual;
-                    }
-                }else if(dato_nodo>Integer.parseInt((actual.dato.toString()))){
-                    actual.fe++;
-                    if (actual.fe==2){
-                        n=actual;
-                    }
-                    actual = actual.subarbolDcho();
-                    if (n!=null && n1==null){
-                        n1 =actual;
-                    }
-                }
+        /*verifica que el nodo no sea nulo */ 
+        if (nodo !=null){
+            //Busca el nodo para Verificar que no exista dentro del arbol
+            Nodo nodoBuscado = buscarNodo(nodo.dato);
+            
+            if (nodoBuscado == null){
 
+                while (actual != null){
+                    
+                    anterior = actual;
+                    
+                    if(dato_nodo<Integer.parseInt((actual.dato.toString()))){
+                        
+                        actual.fe--;
+                        
+                        if (actual.fe == -2){
+                            n=actual;
+                            n0=anterior;
+                        }
+                        
+                        actual = actual.subarbolIzdo();
+                        
+                        if (n!=null && n1==null){
+                            n1 =actual;
+                        }
+                    }else if(dato_nodo>Integer.parseInt((actual.dato.toString()))){
+                        
+                        actual.fe++;
+                        
+                        if (actual.fe==2){
+                            n=actual;
+                        }
+                        
+                        actual = actual.subarbolDcho();
+                        
+                        if (n!=null && n1==null){
+                            n1 =actual;
+                        }
+                    }
+
+                }
+            }else{
+                System.out.print("\n El valor insertado ya existe \n");
+                return;
             }
+
         }else{
-            System.out.print("\n El valor insertado ya existe \n");
             return;
         }       
+        
+        //Inserta el nodo
         if(dato_nodo>Integer.parseInt((anterior.dato.toString()))){
             anterior.ramaDcho = nodo;
 
@@ -124,14 +142,18 @@ public class ArbolBinario
     public void eliminar(Object dato){
         
         Nodo elim = buscarNodo(dato);
+        Nodo aux_izq =new Nodo(null);
+        Nodo aux_Dcho =new Nodo(null);
         
-        if(elim.subarbolIzdo()!=null){
-            Nodo aux_izq =elim.subarbolIzdo();
-            insertar(aux_izq);
-        }else if (elim.subarbolDcho()!=null){
-            Nodo aux_Dcho =elim.subarbolDcho();
-            insertar(aux_Dcho);
-        }
+        if(elim.subarbolIzdo()!=null || elim.subarbolDcho()!=null){
+            aux_izq =elim.subarbolIzdo();
+            aux_Dcho =elim.subarbolDcho();
+        } 
+       
+        elim=null;
+         
+        insertar(aux_izq);
+        insertar(aux_Dcho);
         
         System.out.print("\n Nodo eliminado");
         
