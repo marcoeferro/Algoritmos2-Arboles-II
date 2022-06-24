@@ -19,6 +19,7 @@ public class main{
             
             switch(rta){
                 case 1:
+                    //verifica si se inserto la raiz o no
                     if (contador_nodos==0){
                         String valor;
                         System.out.print("\n Ingrese el valor del nodo raiz \n");
