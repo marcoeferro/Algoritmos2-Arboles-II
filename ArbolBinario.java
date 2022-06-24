@@ -37,8 +37,6 @@ public class ArbolBinario
         Nodo actual = raiz;
         Nodo anterior = new Nodo(null);
         
-        int dato_nodo = Integer.parseInt((nodo.dato.toString()));
-        
         //Nodos para las rotaciones
         Nodo n0=new Nodo(null);
         Nodo n=new Nodo(null);
@@ -46,6 +44,9 @@ public class ArbolBinario
 
         /*verifica que el nodo no sea nulo */ 
         if (nodo !=null){
+            
+            int dato_nodo = Integer.parseInt((nodo.dato.toString()));
+            
             //Busca el nodo para Verificar que no exista dentro del arbol
             Nodo nodoBuscado = buscarNodo(nodo.dato);
             
