@@ -57,10 +57,7 @@ public class ArbolBinario
             System.out.print("\n El valor insertado ya existe \n");
             return;
         }
-
-        
     }
-  
     
     public void eliminar(Object dato){
         
@@ -78,6 +75,7 @@ public class ArbolBinario
         
     }
     
+    //RECORRIDOS
 
     // Recorrido de un árbol binario en preorden
     public static void preorden(Nodo nodo){
@@ -123,6 +121,77 @@ public class ArbolBinario
         
         System.out.print(" ["+String.valueOf(nodo)+"] ");
         
+    }
+
+    //ROTACIONES 
+
+    private NodoAvl rotacionII(NodoAvl n, NodoAvl n1){
+        n.ramaIzdo(n1.subarbolDcho());
+        n1.ramaDcho(n);
+        // actualización de los factores de equilibrio 
+        if (n1.fe == -1){ // se cumple en la inserción 
+            n.fe = 0;
+            n1.fe = 0;
+        }else{
+            n.fe = -1;
+            n1.fe = 1;
+        }
+        return n1;
+    }
+    
+    private NodoAvl rotacionDD(NodoAvl n, NodoAvl n1){
+    n.ramaDcho(n1.subarbolIzdo());
+    n1.ramaIzdo(n);
+    // actualización de los factores de equilibrio 
+    if (n1.fe == +1){ // se cumple en la inserción
+        n.fe = 0;
+        n1.fe = 0;
+    }
+    else{
+        n.fe = +1;
+        n1.fe = -1;
+    }
+    return n1;
+    }
+
+    private NodoAvl rotacionID(NodoAvl n, NodoAvl n1){
+    NodoAvl n2;
+    n2 = (NodoAvl) n1.subarbolDcho();
+    n.ramaIzdo(n2.subarbolDcho());
+    n2.ramaDcho(n);
+    n1.ramaDcho(n2.subarbolIzdo());
+    n2.ramaIzdo(n1);
+    // actualización de los factores de equilibrio
+    if (n2.fe == +1){
+        n1.fe = -1;
+    }else{
+        n1.fe = 0;
+    }if (n2.fe == -1){
+        n.fe = 1;
+    }else{
+        n.fe = 0;
+    }
+    n2.fe = 0;
+    return n2;
+    }
+    private NodoAvl rotacionDI(NodoAvl n, NodoAvl n1){
+        NodoAvl n2;
+        n2 = (NodoAvl)n1.subarbolIzdo();
+        n.ramaDcho(n2.subarbolIzdo());
+        n2.ramaIzdo(n);
+        n1.ramaIzdo(n2.subarbolDcho());
+        n2.ramaDcho(n1);
+        // actualización de los factores de equilibrio
+        if (n2.fe == +1)
+            n.fe = -1;
+        else
+            n.fe = 0;
+        if (n2.fe == -1)
+            n1.fe = 1;
+        else
+            n1.fe = 0;
+        n2.fe = 0;
+        return n2;
     }
 
 }
