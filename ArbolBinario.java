@@ -18,15 +18,15 @@ public class ArbolBinario
     //Metodos
     public Nodo buscarNodo(Object dato){
         Nodo actual = raiz;
-        int datonodo = Integer.parseInt((String.valueOf(dato)));
+        int dato_nodo = Integer.parseInt((String.valueOf(dato)));
         
         while (actual != null){
             
-            if(datonodo<Integer.parseInt((actual.dato.toString()))){
+            if(dato_nodo<Integer.parseInt((actual.dato.toString()))){
                 actual = actual.ramaIzdo;
-            }else if(datonodo>Integer.parseInt((actual.dato.toString()))){
+            }else if(dato_nodo>Integer.parseInt((actual.dato.toString()))){
                 actual = actual.ramaDcho;
-            }else if (Integer.parseInt(actual.toString()) == datonodo){
+            }else if (Integer.parseInt(actual.toString()) == dato_nodo){
                return actual;
             }
         }
@@ -36,27 +36,32 @@ public class ArbolBinario
     public void insertar(Nodo nodo){
         Nodo actual = raiz;
         Nodo anterior = new Nodo(null);
-        int datonodo = Integer.parseInt((nodo.dato.toString()));
-        while (actual != null){
-            anterior = actual;
-            if(datonodo<Integer.parseInt((actual.dato.toString()))){
-                actual = actual.subarbolIzdo();
-            }else if(datonodo>Integer.parseInt((actual.dato.toString()))){
-                actual = actual.subarbolDcho();
-            }else {
-                System.out.print("\n El valor insertado ya existe \n");
-                return;
+        int dato_nodo = Integer.parseInt((nodo.dato.toString()));
+        
+        //Busca el nodo para Verificar que no exista 
+        Nodo nodoBuscado = buscarNodo(nodo.dato);
+        
+        if (nodoBuscado == null){
+            while (actual != null){
+                anterior = actual;
+                if(dato_nodo<Integer.parseInt((actual.dato.toString()))){
+                    actual.fe--;
+                    actual = actual.subarbolIzdo();
+                }else if(dato_nodo>Integer.parseInt((actual.dato.toString()))){
+                    actual.fe++;
+                    actual = actual.subarbolDcho();
+                }
             }
-        }
-        if(datonodo>Integer.parseInt((anterior.dato.toString()))){
-            anterior.ramaDcho = nodo;
-
-        }else if(datonodo<Integer.parseInt((anterior.dato.toString()))){
-            anterior.ramaIzdo=nodo;
-        }else {
+        }else{
             System.out.print("\n El valor insertado ya existe \n");
             return;
-        }
+        }       
+        if(dato_nodo>Integer.parseInt((anterior.dato.toString()))){
+            anterior.ramaDcho = nodo;
+
+        }else if(dato_nodo<Integer.parseInt((anterior.dato.toString()))){
+            anterior.ramaIzdo=nodo;
+        }       
     }
     
     public void eliminar(Object dato){

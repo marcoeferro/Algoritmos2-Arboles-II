@@ -5,13 +5,14 @@ public class Nodo
 	protected Nodo ramaIzdo;
 	protected Nodo ramaDcho;
 	protected int fe ;
-	
+
 	//constructores
 	public Nodo(Object valor){
 		dato = valor;
 		this.ramaIzdo = null;
 		this.ramaDcho = null;
 		this.fe=0;
+		this.padre=null;
 	}
 	
 	@Override
@@ -34,5 +35,8 @@ public class Nodo
 		ramaIzdo = n; }
 	public void ramaDcho(Nodo n){ 
 		ramaDcho = n; }
+	public void setFe(int fe){
+		this.fe=fe;
+	}
 }
 
