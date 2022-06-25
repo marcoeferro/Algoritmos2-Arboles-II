@@ -1,7 +1,7 @@
 package arbolBinario;
 import java.util.Scanner;
 public class main{
-    public static void main(String [] args){
+    public static void main (String [] args){
      
         int condicion=99,rta=99,contador_nodos=0;
         int nvo_nodo=99;
@@ -11,7 +11,7 @@ public class main{
         do{
             System.out.print("\n[1] Añadir Nodo \n");
             System.out.print("[2] Eliminar Nodo \n");
-            System.out.print("[3] Mostrar Arbol (inorden)\n");
+            System.out.print("[3] Mostrar Arbol (prenorden)\n");
             System.out.print("[4] Recorrer pre orden in orden post orden \n");
             System.out.print("[0] Salir del programa \n");
             rta=input.nextInt();
@@ -47,24 +47,24 @@ public class main{
                     arbol.eliminar(valor);
                     break;
                 case 3:
-                    ArbolBinario.preorden(arbol.raiz);
+                    arbol.preorden(arbol.raiz);
                     System.out.print("\n");
                     break;
                 case 4:
                     
                     System.out.print("\n Recorrido en Orden :\n");
-                    ArbolBinario.inorden(arbol.raiz);
+                    arbol.inorden(arbol.raiz);
                     System.out.print("\nRecorrido en pre Orden : \n");
-                    ArbolBinario.preorden(arbol.raiz);
+                    arbol.preorden(arbol.raiz);
                     System.out.print("\nRecorrido en Post Orden : \n");
-                    ArbolBinario.postorden(arbol.raiz);
+                    arbol.postorden(arbol.raiz);
                     
                     break;
                 case 0 :
                     condicion = 0;
                     break;
                 default:
-                    System.out.print("La opcion ingresada no es valida\n");
+                    System.out.print("La opcion ingresa no es valida\n");
                     break;
     
             }

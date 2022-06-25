@@ -18,10 +18,10 @@ public class ArbolBinario
     //Metodos
     public Nodo buscarNodo(Object dato){
         Nodo actual = raiz;
-        
+        int dato_nodo;
         if(dato !=null){
             
-            int dato_nodo = Integer.parseInt((String.valueOf(dato)));
+            dato_nodo = Integer.parseInt(dato.toString());
         
             while (actual != null){
                 
@@ -44,6 +44,7 @@ public class ArbolBinario
         Nodo actual = raiz;
         Nodo anterior = new Nodo(null);
         
+        int dato_nodo;
         //Nodos para las rotaciones
         Nodo n0=new Nodo(null);
         Nodo n=new Nodo(null);
@@ -52,7 +53,7 @@ public class ArbolBinario
         /*verifica que el nodo no sea nulo */ 
         if (nodo !=null){
             
-            int dato_nodo = Integer.parseInt((String.valueOf(dato)));
+            dato_nodo = Integer.parseInt((String.valueOf(nodo.dato)));
             
             //Busca el nodo para Verificar que no exista dentro del arbol
             Nodo nodoBuscado = buscarNodo(nodo.dato);
@@ -65,18 +66,19 @@ public class ArbolBinario
                     
                     if(dato_nodo<Integer.parseInt((actual.dato.toString()))){
                         
-                        actual.fe--;
+                        actual.fe=actual.fe-1;
                         
+                        if (n.dato!=null && n1.dato==null){
+                            n1 =actual;
+                        }
                         if (actual.fe == -2){
                             n=actual;
                             n0=anterior;
                         }
-                        
+                        System.out.print(actual.fe);
                         actual = actual.subarbolIzdo();
-                        
-                        if (n!=null && n1==null){
-                            n1 =actual;
-                        }
+                        System.out.print(actual.fe);
+                       
                     }else if(dato_nodo>Integer.parseInt((actual.dato.toString()))){
                         
                         actual.fe++;
@@ -114,13 +116,15 @@ public class ArbolBinario
         el nodo n0 se guarda para insertar el nodo n1 */
         switch(n.fe){
             case -2:
+                
                 if(n1.fe==1){
-                    if(n0.subarbolIzdo()==n){
+                   if(n0.subarbolIzdo()==n){
                         n0.ramaIzdo=rotacionID(n, n1);
                     }else if (n0.subarbolDcho()==n){
                         n0.ramaDcho=rotacionID(n, n1);
                     }
-                }else if(n1.fe==-1){
+                }
+                if(n1.fe== (int)(-1)){
                     if(n0.subarbolIzdo()==n){
                         n0.ramaIzdo=rotacionII(n, n1);
                     }else if (n0.subarbolDcho()==n){
@@ -237,7 +241,7 @@ public class ArbolBinario
     //RECORRIDOS
 
     // Recorrido de un árbol binario en preorden
-    public static void preorden(Nodo nodo){
+    public  void preorden(Nodo nodo){
         
         System.out.print(" ["+String.valueOf(nodo)+"] ");
         
@@ -252,7 +256,7 @@ public class ArbolBinario
     }
 
     // Recorrido de un árbol binario en inorden
-    public static void inorden(Nodo nodo){
+    public  void inorden(Nodo nodo){
         
         
         if (nodo.subarbolIzdo() != null){
@@ -268,7 +272,7 @@ public class ArbolBinario
     }
     
     // Recorrido de un árbol binario en postorden
-    public static void postorden(Nodo nodo){
+    public  void postorden(Nodo nodo){
         
         if (nodo.subarbolIzdo() != null){
             postorden(nodo.subarbolIzdo());
