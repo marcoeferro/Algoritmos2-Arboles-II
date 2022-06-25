@@ -12,7 +12,6 @@ public class Nodo
 		this.ramaIzdo = null;
 		this.ramaDcho = null;
 		this.fe=0;
-		this.padre=null;
 	}
 	
 	@Override

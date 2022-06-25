@@ -18,18 +18,25 @@ public class ArbolBinario
     //Metodos
     public Nodo buscarNodo(Object dato){
         Nodo actual = raiz;
-        int dato_nodo = Integer.parseInt((String.valueOf(dato)));
         
-        while (actual != null){
+        if(dato !=null){
             
-            if(dato_nodo<Integer.parseInt((actual.dato.toString()))){
-                actual = actual.ramaIzdo;
-            }else if(dato_nodo>Integer.parseInt((actual.dato.toString()))){
-                actual = actual.ramaDcho;
-            }else if (Integer.parseInt(actual.toString()) == dato_nodo){
-               return actual;
+            int dato_nodo = Integer.parseInt((String.valueOf(dato)));
+        
+            while (actual != null){
+                
+                if(dato_nodo<Integer.parseInt((actual.dato.toString()))){
+                    actual = actual.ramaIzdo;
+                }else if(dato_nodo>Integer.parseInt((actual.dato.toString()))){
+                    actual = actual.ramaDcho;
+                }else if (Integer.parseInt(actual.toString()) == dato_nodo){
+                return actual;
+                }
             }
+        }else {
+            return null;
         }
+        
         return null;
     }
 
@@ -45,7 +52,7 @@ public class ArbolBinario
         /*verifica que el nodo no sea nulo */ 
         if (nodo !=null){
             
-            int dato_nodo = Integer.parseInt((nodo.dato.toString()));
+            int dato_nodo = Integer.parseInt((String.valueOf(dato)));
             
             //Busca el nodo para Verificar que no exista dentro del arbol
             Nodo nodoBuscado = buscarNodo(nodo.dato);
@@ -142,20 +149,87 @@ public class ArbolBinario
     
     public void eliminar(Object dato){
         
-        Nodo elim = buscarNodo(dato);
-        Nodo aux_izq =new Nodo(null);
-        Nodo aux_Dcho =new Nodo(null);
+        Nodo actual = raiz;
+        Nodo anterior =null;
         
-        if(elim.subarbolIzdo()!=null || elim.subarbolDcho()!=null){
-            aux_izq =elim.subarbolIzdo();
-            aux_Dcho =elim.subarbolDcho();
-        } 
-       
-        elim=null;
-         
-        insertar(aux_izq);
-        insertar(aux_Dcho);
-        
+        Nodo n0=new Nodo(null);
+        Nodo n=new Nodo(null);
+        Nodo n1=new Nodo(null);
+
+
+        if (raiz.dato!=dato){
+            while (actual.dato != dato){
+            
+                if(Integer.parseInt((dato.toString())) < Integer.parseInt((actual.dato.toString()))){
+                    actual.fe++;
+                    if (n!=null && n1==null){
+                        n1 =actual;
+                    }
+                    if(actual.fe == 2 ){
+                        n=actual;
+                        n0=anterior;
+                    }
+                    anterior=actual;
+                    actual = actual.ramaIzdo;
+                }else if(Integer.parseInt((dato.toString())) > Integer.parseInt((actual.dato.toString()))){
+                    actual.fe--;
+                    if (n!=null && n1==null){
+                        n1 =actual;
+                    }
+                    if(actual.fe == 2 ){
+                        n=actual;
+                        n0=anterior;
+                    }
+                    anterior=actual;
+                    actual = actual.ramaDcho;
+                }
+            }
+
+
+            if (anterior.subarbolDcho()==actual){
+                anterior.ramaDcho=actual.ramaIzdo;
+            }else{
+                anterior.ramaIzdo=actual.ramaIzdo;
+            }
+            
+            switch(n.fe){
+                case -2:
+                    if(n1.fe==1){
+                        if(n0.subarbolIzdo()==n){
+                            n0.ramaIzdo=rotacionID(n, n1);
+                        }else if (n0.subarbolDcho()==n){
+                            n0.ramaDcho=rotacionID(n, n1);
+                        }
+                    }else if(n1.fe==-1){
+                        if(n0.subarbolIzdo()==n){
+                            n0.ramaIzdo=rotacionII(n, n1);
+                        }else if (n0.subarbolDcho()==n){
+                            n0.ramaDcho=rotacionII(n, n1);
+                        }
+                    }
+                    break;
+                case 2:
+                    if(n1.fe==1){
+                        if(n0.subarbolIzdo()==n){
+                            n0.ramaIzdo=rotacionDD(n, n1);
+                        }else if (n0.subarbolDcho()==n){
+                            n0.ramaDcho=rotacionDD(n, n1);
+                        }
+                    }else if(n1.fe==-1){
+                        if(n0.subarbolIzdo()==n){
+                            n0.ramaIzdo=rotacionDI(n, n1);
+                        }else if (n0.subarbolDcho()==n){
+                            n0.ramaDcho=rotacionDI(n, n1);
+                        }
+                    }
+                    break;
+            }
+
+            insertar(actual.ramaDcho);
+
+        }else{
+            raiz=null;
+        }        
         System.out.print("\n Nodo eliminado");
         
     }
@@ -210,7 +284,7 @@ public class ArbolBinario
 
     //ROTACIONES 
 
-    private NodoAvl rotacionII(NodoAvl n, NodoAvl n1){
+    private Nodo rotacionII(Nodo n, Nodo n1){
         n.ramaIzdo(n1.subarbolDcho());
         n1.ramaDcho(n);
         // actualización de los factores de equilibrio 
@@ -224,7 +298,7 @@ public class ArbolBinario
         return n1;
     }
     
-    private NodoAvl rotacionDD(NodoAvl n, NodoAvl n1){
+    private Nodo rotacionDD(Nodo n, Nodo n1){
         n.ramaDcho(n1.subarbolIzdo());
         n1.ramaIzdo(n);
         // actualización de los factores de equilibrio 
@@ -239,9 +313,9 @@ public class ArbolBinario
         return n1;
     }
 
-    private NodoAvl rotacionID(NodoAvl n, NodoAvl n1){
-        NodoAvl n2;
-        n2 = (NodoAvl) n1.subarbolDcho();
+    private Nodo rotacionID(Nodo n, Nodo n1){
+        Nodo n2;
+        n2 = (Nodo) n1.subarbolDcho();
         n.ramaIzdo(n2.subarbolDcho());
         n2.ramaDcho(n);
         n1.ramaDcho(n2.subarbolIzdo());
@@ -259,9 +333,9 @@ public class ArbolBinario
         n2.fe = 0;
         return n2;
     }
-    private NodoAvl rotacionDI(NodoAvl n, NodoAvl n1){
-        NodoAvl n2;
-        n2 = (NodoAvl)n1.subarbolIzdo();
+    private Nodo rotacionDI(Nodo n, Nodo n1){
+        Nodo n2;
+        n2 = (Nodo)n1.subarbolIzdo();
         n.ramaDcho(n2.subarbolIzdo());
         n2.ramaIzdo(n);
         n1.ramaIzdo(n2.subarbolDcho());

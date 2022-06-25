@@ -11,7 +11,7 @@ public class main{
         do{
             System.out.print("\n[1] Añadir Nodo \n");
             System.out.print("[2] Eliminar Nodo \n");
-            System.out.print("[3] Mostrar Arbol (en preorden)\n");
+            System.out.print("[3] Mostrar Arbol (inorden)\n");
             System.out.print("[4] Recorrer pre orden in orden post orden \n");
             System.out.print("[0] Salir del programa \n");
             rta=input.nextInt();
