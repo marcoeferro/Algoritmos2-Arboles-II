@@ -15,7 +15,9 @@ public class ArbolBinario
         this.raiz = new Nodo(dato);
     }
     
-    //Metodos
+    //METODOS Y PROCEDIMIENTOS
+
+    //Busca un nodo dentro del arbol y si existe lo devuelve sino devuelve null
     public Nodo buscarNodo(Object dato){
         Nodo actual = raiz;
         int dato_nodo;
@@ -40,11 +42,13 @@ public class ArbolBinario
         return null;
     }
 
+    //Inserta Nodos al arbol
     public void insertar(Nodo nodo){
         Nodo actual = raiz;
         Nodo anterior = new Nodo(null);
         
         int dato_nodo;
+        
         //Nodos para las rotaciones
         Nodo n0=new Nodo(null);
         Nodo n=new Nodo(null);
@@ -60,43 +64,30 @@ public class ArbolBinario
             
             if (nodoBuscado == null){
 
+                actualizarFe(raiz,nodo.dato);
+
                 while (actual != null){
+            
+                    if(n.dato!=null && (actual.fe==1 || actual.fe==-1)){
+                        n1=actual;
+                    }
+                    if(actual.fe==-2 || actual.fe==2){
+                        n=actual;
+                        n0=anterior;
+                    }
                     
                     anterior = actual;
                     
-                    if(dato_nodo<Integer.parseInt((actual.dato.toString()))){
-                        
-                        actual.fe=actual.fe-1;
-                        
-                        if (n.dato!=null && n1.dato==null){
-                            n1 =actual;
-                        }
-                        if (actual.fe == -2){
-                            n=actual;
-                            n0=anterior;
-                        }
-                        System.out.print(actual.fe);
+                    if(Integer.parseInt(nodo.dato.toString()) < Integer.parseInt(actual.dato.toString())){
                         actual = actual.subarbolIzdo();
-                        System.out.print(actual.fe);
-                       
-                    }else if(dato_nodo>Integer.parseInt((actual.dato.toString()))){
-                        
-                        actual.fe++;
-                        
-                        if (actual.fe==2){
-                            n=actual;
-                        }
-                        
+                    }else if(Integer.parseInt(nodo.dato.toString()) > Integer.parseInt(actual.dato.toString())){
                         actual = actual.subarbolDcho();
-                        
-                        if (n!=null && n1==null){
-                            n1 =actual;
-                        }
                     }
-
                 }
-            }else{
-                System.out.print("\n El valor insertado ya existe \n");
+
+            }
+            else{
+                System.out.print("\n El valor ingresado ya existe \n");
                 return;
             }
 
@@ -151,6 +142,25 @@ public class ArbolBinario
 
     }
     
+    //Actualiza factores de equilibrio
+    public void actualizarFe(Nodo nodo,Object dato){
+        
+        if(nodo==null){
+            return;
+        }
+
+        if(Integer.parseInt(dato.toString()) < Integer.parseInt(nodo.dato.toString())) { 
+            nodo.fe--;
+            actualizarFe(nodo.subarbolIzdo(), dato);
+
+        }else if (Integer.parseInt(dato.toString()) > Integer.parseInt(nodo.dato.toString())){
+            nodo.fe++;
+            actualizarFe(nodo.subarbolDcho(), dato);
+        }
+
+    }
+
+    //Elimina Nodos
     public void eliminar(Object dato){
         
         Nodo actual = raiz;
@@ -243,7 +253,7 @@ public class ArbolBinario
     // Recorrido de un árbol binario en preorden
     public  void preorden(Nodo nodo){
         
-        System.out.print(" ["+String.valueOf(nodo)+"] ");
+        System.out.print(" ["+String.valueOf(nodo.dato)+"] ");
         
         if (nodo.subarbolIzdo() != null){
             preorden(nodo.subarbolIzdo());
@@ -337,6 +347,7 @@ public class ArbolBinario
         n2.fe = 0;
         return n2;
     }
+
     private Nodo rotacionDI(Nodo n, Nodo n1){
         Nodo n2;
         n2 = (Nodo)n1.subarbolIzdo();
