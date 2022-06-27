@@ -64,9 +64,9 @@ public class ArbolBinario
             
             if (nodoBuscado == null){
 
-                actualizarFe(raiz,nodo.dato);
+                actualizarFe(raiz,nodo.dato);//Actuliza factores de equilibrio
 
-                while (actual != null){
+                while (actual != null){// setea actual anterior n n0 n1 
             
                     if(n.dato!=null && (actual.fe==1 || actual.fe==-1)){
                         n1=actual;
@@ -143,21 +143,71 @@ public class ArbolBinario
     }
     
     //Actualiza factores de equilibrio
-    public void actualizarFe(Nodo nodo,Object dato){
-        
+    /* lo que hace es recorrer el camino de insercion y hasta llegar al nulo en ese punto devuelve 
+    un 1 para actulizar el subarbol correspondiente luego en las respuestas respuestas recursivas 
+    se fija el factor de equilibrio del nodo para devolver 1 o cero segun corresponda*/
+    
+    public int actualizarFe(Nodo nodo,Object dato){
+        boolean insertar=false;
+
         if(nodo==null){
-            return;
+            insertar = true;
+            return 1;
         }
 
         if(Integer.parseInt(dato.toString()) < Integer.parseInt(nodo.dato.toString())) { 
-            nodo.fe--;
-            actualizarFe(nodo.subarbolIzdo(), dato);
+            
+            //nodo.alturaIzq=nodo.alturaIzq+actualizarFe(nodo.subarbolIzdo(), dato);
+            nodo.fe=nodo.fe-actualizarFe(nodo.subarbolIzdo(), dato);
+            
+            if (insertar){
+                Nodo nvo = new Nodo(dato);
+                nodo.ramaIzdo= nvo;
+                insertar=false;
+            }
+
+            switch(nodo.fe){
+                case 0:
+                    return 0;
+                case -1:
+                    return 1;
+                case -2:
+                    Nodo n = nodo;
+                    Nodo n1 = nodo.subarbolIzdo();
+                    if (n1.fe==-1){
+                        rotacionII(n, n1);
+                    }else if (n1.fe==1){
+                        rotacionID(n, n1);
+                    }
+                    return 0;
+            }
 
         }else if (Integer.parseInt(dato.toString()) > Integer.parseInt(nodo.dato.toString())){
-            nodo.fe++;
-            actualizarFe(nodo.subarbolDcho(), dato);
+            
+            nodo.fe=nodo.fe+actualizarFe(nodo.subarbolDcho(), dato);
+            if (insertar){
+                Nodo nvo = new Nodo(dato);
+                nodo.ramaIzdo= nvo;
+                insertar=false;
+            }
+            switch(nodo.fe){
+                case 0:
+                    return 0;
+                case 1:
+                    return 1;
+                case 2:
+                    Nodo n = nodo;
+                    Nodo n1 = nodo.subarbolIzdo();
+                    if (n1.fe==-1){
+                        rotacionDI(n, n1);
+                    }else if (n1.fe==1){
+                        rotacionDD(n, n1);
+                    }
+                    return 0;
+            }
         }
-
+          
+        return nodo.fe;
     }
 
     //Elimina Nodos
@@ -253,7 +303,7 @@ public class ArbolBinario
     // Recorrido de un árbol binario en preorden
     public  void preorden(Nodo nodo){
         
-        System.out.print(" ["+String.valueOf(nodo.dato)+"] ");
+        System.out.print(" ["+String.valueOf(nodo.dato)+" - "+String.valueOf(nodo.fe)+"] ");
         
         if (nodo.subarbolIzdo() != null){
             preorden(nodo.subarbolIzdo());
