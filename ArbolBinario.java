@@ -90,7 +90,6 @@ public class ArbolBinario
                 System.out.print("\n El valor ingresado ya existe \n");
                 return;
             }
-
         }else{
             return;
         }       
@@ -115,7 +114,7 @@ public class ArbolBinario
                         n0.ramaDcho=rotacionID(n, n1);
                     }
                 }
-                if(n1.fe== (int)(-1)){
+                if(n1.fe==-1){
                     if(n0.subarbolIzdo()==n){
                         n0.ramaIzdo=rotacionII(n, n1);
                     }else if (n0.subarbolDcho()==n){
@@ -148,162 +147,34 @@ public class ArbolBinario
     se fija el factor de equilibrio del nodo para devolver 1 o cero segun corresponda*/
     
     public int actualizarFe(Nodo nodo,Object dato){
-        boolean insertar=false;
-
+        
         if(nodo==null){
-            insertar = true;
             return 1;
         }
 
         if(Integer.parseInt(dato.toString()) < Integer.parseInt(nodo.dato.toString())) { 
             
-            //nodo.alturaIzq=nodo.alturaIzq+actualizarFe(nodo.subarbolIzdo(), dato);
-            nodo.fe=nodo.fe-actualizarFe(nodo.subarbolIzdo(), dato);
-            
-            if (insertar){
-                Nodo nvo = new Nodo(dato);
-                nodo.ramaIzdo= nvo;
-                insertar=false;
-            }
-
-            switch(nodo.fe){
-                case 0:
-                    return 0;
-                case -1:
-                    return 1;
-                case -2:
-                    Nodo n = nodo;
-                    Nodo n1 = nodo.subarbolIzdo();
-                    if (n1.fe==-1){
-                        rotacionII(n, n1);
-                    }else if (n1.fe==1){
-                        rotacionID(n, n1);
-                    }
-                    return 0;
-            }
+            nodo.setFe(nodo.getFe()-actualizarFe(nodo.subarbolIzdo(), dato));
 
         }else if (Integer.parseInt(dato.toString()) > Integer.parseInt(nodo.dato.toString())){
             
-            nodo.fe=nodo.fe+actualizarFe(nodo.subarbolDcho(), dato);
-            if (insertar){
-                Nodo nvo = new Nodo(dato);
-                nodo.ramaIzdo= nvo;
-                insertar=false;
-            }
-            switch(nodo.fe){
-                case 0:
-                    return 0;
-                case 1:
-                    return 1;
-                case 2:
-                    Nodo n = nodo;
-                    Nodo n1 = nodo.subarbolIzdo();
-                    if (n1.fe==-1){
-                        rotacionDI(n, n1);
-                    }else if (n1.fe==1){
-                        rotacionDD(n, n1);
-                    }
-                    return 0;
-            }
+            nodo.setFe(nodo.getFe()-actualizarFe(nodo.subarbolDcho(), dato));
+
         }
-          
-        return nodo.fe;
-    }
-
-    //Elimina Nodos
-    public void eliminar(Object dato){
         
-        Nodo actual = raiz;
-        Nodo anterior =null;
-        
-        Nodo n0=new Nodo(null);
-        Nodo n=new Nodo(null);
-        Nodo n1=new Nodo(null);
-
-
-        if (raiz.dato!=dato){
-            while (actual.dato != dato){
-            
-                if(Integer.parseInt((dato.toString())) < Integer.parseInt((actual.dato.toString()))){
-                    actual.fe++;
-                    if (n!=null && n1==null){
-                        n1 =actual;
-                    }
-                    if(actual.fe == 2 ){
-                        n=actual;
-                        n0=anterior;
-                    }
-                    anterior=actual;
-                    actual = actual.ramaIzdo;
-                }else if(Integer.parseInt((dato.toString())) > Integer.parseInt((actual.dato.toString()))){
-                    actual.fe--;
-                    if (n!=null && n1==null){
-                        n1 =actual;
-                    }
-                    if(actual.fe == 2 ){
-                        n=actual;
-                        n0=anterior;
-                    }
-                    anterior=actual;
-                    actual = actual.ramaDcho;
-                }
-            }
-
-
-            if (anterior.subarbolDcho()==actual){
-                anterior.ramaDcho=actual.ramaIzdo;
-            }else{
-                anterior.ramaIzdo=actual.ramaIzdo;
-            }
-            
-            switch(n.fe){
-                case -2:
-                    if(n1.fe==1){
-                        if(n0.subarbolIzdo()==n){
-                            n0.ramaIzdo=rotacionID(n, n1);
-                        }else if (n0.subarbolDcho()==n){
-                            n0.ramaDcho=rotacionID(n, n1);
-                        }
-                    }else if(n1.fe==-1){
-                        if(n0.subarbolIzdo()==n){
-                            n0.ramaIzdo=rotacionII(n, n1);
-                        }else if (n0.subarbolDcho()==n){
-                            n0.ramaDcho=rotacionII(n, n1);
-                        }
-                    }
-                    break;
-                case 2:
-                    if(n1.fe==1){
-                        if(n0.subarbolIzdo()==n){
-                            n0.ramaIzdo=rotacionDD(n, n1);
-                        }else if (n0.subarbolDcho()==n){
-                            n0.ramaDcho=rotacionDD(n, n1);
-                        }
-                    }else if(n1.fe==-1){
-                        if(n0.subarbolIzdo()==n){
-                            n0.ramaIzdo=rotacionDI(n, n1);
-                        }else if (n0.subarbolDcho()==n){
-                            n0.ramaDcho=rotacionDI(n, n1);
-                        }
-                    }
-                    break;
-            }
-
-            insertar(actual.ramaDcho);
-
+        if (nodo.getFe()!=0){
+            return 1;
         }else{
-            raiz=null;
-        }        
-        System.out.print("\n Nodo eliminado");
-        
+            return 0;
+        }
     }
-    
+
     //RECORRIDOS
 
     // Recorrido de un árbol binario en preorden
     public  void preorden(Nodo nodo){
         
-        System.out.print(" ["+String.valueOf(nodo.dato)+" - "+String.valueOf(nodo.fe)+"] ");
+        System.out.print(" ["+String.valueOf(nodo.dato)+"] ");
         
         if (nodo.subarbolIzdo() != null){
             preorden(nodo.subarbolIzdo());

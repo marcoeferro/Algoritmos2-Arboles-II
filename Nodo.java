@@ -4,17 +4,13 @@ public class Nodo
 	protected Object dato;
 	protected Nodo ramaIzdo;
 	protected Nodo ramaDcho;
-	protected int alturaIzq;
-	protected int alturaDer;
-	protected int fe = alturaDer-alturaIzq;
-
+	protected int fe;
 	//constructores
 	public Nodo(Object valor){
 		dato = valor;
 		this.ramaIzdo = null;
-		this.ramaDcho = null;
-		this.alturaDer= 0;
-		this.alturaIzq= 0;	
+		this.ramaDcho = null;	
+		this.fe=0;
 	}
 	
 	@Override
@@ -31,10 +27,6 @@ public class Nodo
 		return ramaDcho; }
 	public int getFe(){
 		return this.fe; }
-	public int getAlturaIzq(){
-		return this.alturaIzq; }
-	public int getAlturaDer(){
-		return this.alturaDer; }
 	
 	//Setters
 	public void nuevoValor(Object d){ 
@@ -45,15 +37,6 @@ public class Nodo
 		ramaDcho = n; }
 	public void setFe(int fe){
 		this.fe=fe;
-	}
-	public void setAlturaIzq(int altura){
-		this.alturaIzq = altura;
-		this.fe = alturaDer - alturaIzq;
-	}
-	public void setAlturaDer(int altura){
-		this.alturaIzq = altura;
-		this.fe = alturaDer - alturaIzq;
-		
 	}
 }
 
